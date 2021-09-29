@@ -1,0 +1,135 @@
+"../postfix-haskell/planning/stdlib/prelude.phs" include use
+"../postfix-haskell/planning/stdlib/bits.phs" include use
+"../postfix-haskell/planning/stdlib/math.phs" include use
+
+# Generate random float from [0,1)
+{
+    { Void } { Void F32 } Arrow { "js" "Math.random" } import @
+} $rand =
+
+{ # Detect collision between 2 rectangles
+    {   $x1 $y1 $w1 $h1
+        $x2 $y2 $w2 $h2 } =
+    x1 x2 w2 + <
+    x1 w1 + x2 > &&
+    y1 y2 h2 + < &&
+    y1 h1 + y2 > &&
+} $rect_collide =
+
+{ { $x $y $w $h $color } =
+    # Set fill
+    color 0xff0000 and 16 >> $r =
+    color 0xff00 and 8 >> $g =
+    color 0xff and $b =
+    r g b { Void I32 I32 I32 } { Void } Arrow { "js" "setFill" } import @
+
+    # Draw rectangle
+    x y w h
+    { Void x type y type w type h type } { Void } Arrow
+    { "js" "contextFillRect" } import @
+} $Game.draw_rect =
+
+
+400 $Game.WIDTH =
+700 $Game.HEIGHT =
+9.8f $Game.GRAVITY =
+
+{
+    I32 # x
+    F32 # y
+} pack class $Gate =
+150 $Gate.GAP =
+100 $Gate.WIDTH =
+10 $Gate.LIP_WIDTH =
+50 $Gate.LIP_HEIGHT =
+
+-0.0f $Gate.HIDDEN =
+
+{ type Gate == } { unpack pop } $Gate.x fun
+{ type Gate == } { unpack swap pop } $Gate.y fun
+{ type Gate == } { $g =
+    { g unpack swap 1 - swap } pack Gate make
+} $Gate.update_y fun
+
+{
+    rand $n =
+    {
+        Game.WIDTH
+        n Game.HEIGHT Gate.GAP - F32 cast *
+    } pack Gate make
+} $Gate.spawn =
+
+{ type Gate == } { unpack { $x $y } =
+    x
+    0
+    Gate.WIDTH Gate.LIP_WIDTH 2 * +
+    y
+} $Gate.collide_rect_top fun
+{ type Gate == } { unpack { $x $y } =
+    x
+    y Gate.GAP +
+    Gate.WIDTH Gate.LIP_WIDTH 2 * +
+    Game.HEIGHT y -
+} $Gate.collide_rect_bot fun
+
+{ unpack { $x $y } =
+    x Gate.Width neg > y Gate.HIDDEN != &&
+} {
+    unpack { $x $y } =
+    x Gate.LIP_WIDTH +
+    0
+    Gate.WIDTH Gate.LIP_WIDTH 2 * -
+    y Gate.LIP_HEIGHT -
+    0x55ff55
+        Game.draw_rect
+
+    x
+    y Gate.LIP_HEIGHT -
+    Gate.WIDTH
+    Gate.LIP_HEIGHT
+    0x11ff11
+        Game.draw_rect
+
+    x
+    y Gate.GAP +
+    Gate.WIDTH
+    Gate.LIP_HEIGHT
+    0x11ff11
+        Game.draw_rect
+
+    x Gate.LIP_WIDTH +
+    y Gate.GAP Gate.LIP_HEIGHT + +
+    Gate.WIDTH Gate.LIP_WIDTH 2 * -
+    Game.HEIGHT Gate.GAP - Gate.LIP_HEIGHT - y -
+    0x55ff55
+        Game.draw_rect
+} $Gate.draw =
+
+
+##
+# Bird
+##
+
+{
+    F32 # y
+    F32 # dy
+} pack class $Bird =
+
+{ type Bird == } { unpack pop } $Bird.y fun
+{ type Bird == } { unpack pop } $Bird.dy fun
+
+
+{
+
+} $Game.draw =
+
+
+{ Void } {
+    Gate.spawn $g =
+    { g unpack swap pop 20 swap } pack Gate make
+    Gate.draw
+
+    Gate.spawn $gg =
+    { gg unpack swap pop 300 swap } pack Gate make
+    Gate.draw
+} $test export

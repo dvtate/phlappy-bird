@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Postfix-Haskell WASM Demo</title>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+
+            body {
+                background: black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            canvas {
+                border: 1px solid white;
+            }
+        </style>
+    </head>
+    <body onclick="mod.instance.exports.loop()">
+        <canvas width="400" height="700" id="game"></canvas>
+
+        <script>
+            (async () => {
+                // Get canvas 2d context
+                const canvas = document.getElementById('game');
+                const context = canvas.getContext('2d');
+
+                // Instantiate wasm
+                const resp = await fetch('game.wasm');
+                const wasm = await resp.arrayBuffer();
+                const mod = await WebAssembly.instantiate(wasm, {
+                    js: {
+                        'console.log': console.log,
+                        'Math.random': () => {
+                            const ret = Math.random();
+                            console.log('rand', ret);
+                            return ret
+                        },
+
+                        setFill(r, g, b) {
+                            context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                        },
+
+                        contextFillRect: (...args) => {
+                            console.log('cfrect', args);
+                            context.fillRect.bind(context)(...args);
+                        },
+                        contextClearRect: context.clearRect.bind(context),
+
+                        nextFrame() {
+                            requestAnimationFrame(mod.instance.exports.loop);
+                        },
+                    },
+                });
+
+                // Debugging
+                window.mod = mod;
+                window.context = context;
+                window.showMem = () => {
+                    const arr = [...new Uint32Array(mod.instance.exports.memory.buffer)].slice(0,15);
+                    console.log('ball', arr.slice(0, 4));
+                    console.log('paddle', arr.slice(4, 6));
+                };
+
+                // Get exports
+                const { loop, space_down, space_up, init }
+                    = mod.instance.exports;
+
+                // Listen to keyboard events to move the paddle
+                document.addEventListener('keydown', function(e) {
+                    if (e.which === 32) {
+                        space_down();
+                        console.log('space');
+                    }
+                });
+
+                // Listen to keyboard events to stop the paddle if key is released
+                document.addEventListener('keyup', function(e) {
+                    if (e.which === 32) {
+                        space_up();
+                        console.log('keyup', e.which);
+                    }
+                });
+
+                // Start game loop
+                // loop();
+                // mod.instance.exports.draw();
+            })();
+
+        </script>
+    </body>
+</html>
