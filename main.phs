@@ -1,6 +1,7 @@
 "../postfix-haskell/planning/stdlib/prelude.phs" include use
 "../postfix-haskell/planning/stdlib/bits.phs" include use
 "../postfix-haskell/planning/stdlib/math.phs" include use
+"../postfix-haskell/planning/stdlib/static_mem.phs" include use
 
 # Generate random float from [0,1)
 {
@@ -32,7 +33,11 @@
 
 400 $Game.WIDTH =
 700 $Game.HEIGHT =
-9.8f $Game.GRAVITY =
+0.5f $Game.GRAVITY =
+
+##
+# Gates/pipes
+##
 
 {
     I32 # x
@@ -47,10 +52,13 @@
 
 { type Gate == } { unpack pop } $Gate.x fun
 { type Gate == } { unpack swap pop } $Gate.y fun
-{ type Gate == } { $g =
-    { g unpack swap 1 - swap } pack Gate make
-} $Gate.update_y fun
 
+{
+    dup $g = unpack { $x $y } =
+    { g type Gate == } { x 1 - y } $act fun
+    { x Gate.WIDTH neg < y Gate.HIDDEN == || } { x Gate.HIDDEN } $act fun
+    { act } pack Gate make
+} $Gate.update =
 {
     rand $n =
     {
@@ -58,6 +66,17 @@
         n Game.HEIGHT Gate.GAP - F32 cast *
     } pack Gate make
 } $Gate.spawn =
+
+{ pop type Gate == } {
+    $addr = unpack { $x $y } =
+    x addr static_init
+    y addr 4 + static_init
+} $static_init fun
+{ pop type Gate == } {
+    $addr = unpack { $x $y } =
+    x addr store
+    y addr 4 + store
+} $store fun
 
 { type Gate == } { unpack { $x $y } =
     x
@@ -72,8 +91,9 @@
     Game.HEIGHT y -
 } $Gate.collide_rect_bot fun
 
+{ type Gate == } { pop } $Gate.draw fun
 { unpack { $x $y } =
-    x Gate.Width neg > y Gate.HIDDEN != &&
+    x Gate.WIDTH neg > y Gate.HIDDEN != &&
 } {
     unpack { $x $y } =
     x Gate.LIP_WIDTH +
@@ -103,8 +123,7 @@
     Game.HEIGHT Gate.GAP - Gate.LIP_HEIGHT - y -
     0x55ff55
         Game.draw_rect
-} $Gate.draw =
-
+} $Gate.draw fun
 
 ##
 # Bird
@@ -117,19 +136,122 @@
 
 { type Bird == } { unpack pop } $Bird.y fun
 { type Bird == } { unpack pop } $Bird.dy fun
+50 $Bird.X =
+45 $Bird.HEIGHT =
+40 $Bird.WIDTH =
 
+{ unpack { $y $dy } =
+    {
+        y dy +
+        dy Game.GRAVITY +
+    } pack Bird make
+} $Bird.update =
 
 {
+    unpack { $y $dy } =
 
+    Bird.X y Bird.WIDTH Bird.HEIGHT
+    { Void I32 F32 I32 I32 } { Void } Arrow { "js" "drawThwomp" } import @
+} $Bird.draw =
+
+# Memory stuff
+{ pop type Bird == } {
+    $addr = unpack { $y $dy } =
+    y addr static_init
+    dy addr 4 + static_init
+} $static_init fun
+{ pop type Bird == } {
+    $addr = unpack { $y $dy } =
+    y addr store
+    dy addr 4 + store
+} $store fun
+
+# Initialize static memory fields
+8 static_region $Game.BIRD_ADDR =
+8 static_region $Game.GATE1_ADDR =
+8 static_region $Game.GATE2_ADDR =
+{ 10.0f 0.0f } pack Bird make Game.BIRD_ADDR static_init
+{ 0 Gate.HIDDEN } pack Gate make
+dup Game.GATE1_ADDR static_init
+Game.GATE2_ADDR static_init
+
+# Load state from static memory
+{
+    {   Game.BIRD_ADDR "f32.load" asm
+        Game.BIRD_ADDR 4 + "f32.load" asm
+    } pack Bird make
+    {   Game.GATE1_ADDR "i32.load" asm
+        Game.GATE1_ADDR 4 + "f32.load" asm
+    } pack Gate make
+    {   Game.GATE2_ADDR "i32.load" asm
+        Game.GATE2_ADDR 4 + "f32.load" asm
+    } pack Gate make
+} $Game.load =
+
+{
+    # Get state
+    Game.load { $bird $g1 $g2 } =
+
+    # Clear scene
+    0 0 Game.WIDTH Game.HEIGHT
+    { Void I32 I32 I32 I32 } { Void Void } Arrow
+    { "js" "contextClearRect" } import @ pop
+
+    # Draw scene
+    bird Bird.draw
+    #g1 Gate.draw
+    #g2 Gate.draw
 } $Game.draw =
+
+{
+    { $b $g1 $g2 } =
+
+    # Check collisions
+    #
+} $Game.is_over =
+
+{
+    # Get state
+    Game.load { $b $g1 $g2 } =
+
+    # Save state
+    b Bird.update $_b =
+    g1 Gate.update $_g1 =
+    g2 Gate.update $_g2 =
+    _b Game.BIRD_ADDR store
+    _g1 Game.GATE1_ADDR store
+    _g2 Game.GATE2_ADDR store
+} $Game.update =
+
+
+{ Void } { Game.draw } $draw export
+{ Void } { Game.update } $update export
+{ Void } {
+    Game.load pop pop $bird =
+    bird unpack pop $y =
+    { y 20.0f } pack Bird make Game.BIRD_ADDR store
+} $flap export
+{ Void } {
+    Game.draw
+    Game.update
+
+    # Await next frame
+    { Void } { Void } Arrow { "js" "nextFrame" } import @
+} $loop export
 
 
 { Void } {
-    Gate.spawn $g =
-    { g unpack swap pop 20 swap } pack Gate make
-    Gate.draw
+    # Clear scene
+    0 0 Game.WIDTH Game.HEIGHT
+    { Void I32 I32 I32 I32 } { Void Void } Arrow
+    { "js" "contextClearRect" } import @ pop
+
+    { 323.0f 0.0f } pack Bird make Bird.draw
+
+    Gate.spawn $gg2 =
+    { gg2 unpack swap pop 50 swap } pack Gate make Gate.draw
 
     Gate.spawn $gg =
-    { gg unpack swap pop 300 swap } pack Gate make
-    Gate.draw
+    { gg unpack swap pop 280 swap } pack Gate make Gate.draw
+
 } $test export

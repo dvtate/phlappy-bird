@@ -19,7 +19,7 @@
             }
         </style>
     </head>
-    <body onclick="mod.instance.exports.loop()">
+    <body>
         <canvas width="400" height="700" id="game"></canvas>
 
         <script>
@@ -27,6 +27,9 @@
                 // Get canvas 2d context
                 const canvas = document.getElementById('game');
                 const context = canvas.getContext('2d');
+
+                const thwomp = document.createElement('img');
+                thwomp.src = 'thwomp.png';
 
                 // Instantiate wasm
                 const resp = await fetch('game.wasm');
@@ -53,16 +56,21 @@
                         nextFrame() {
                             requestAnimationFrame(mod.instance.exports.loop);
                         },
+
+                        drawThwomp(x, y, w, h) {
+                            // console.log('thwomp', thwomp, x, y, w, h);
+                            context.drawImage(thwomp, x, y, w, h);
+                        }
                     },
                 });
 
                 // Debugging
                 window.mod = mod;
                 window.context = context;
+                window.thwomp = thwomp;
                 window.showMem = () => {
-                    const arr = [...new Uint32Array(mod.instance.exports.memory.buffer)].slice(0,15);
-                    console.log('ball', arr.slice(0, 4));
-                    console.log('paddle', arr.slice(4, 6));
+                    console.log('i32', [...new Uint32Array(mod.instance.exports.memory.buffer)].slice(0,15));
+                    console.log('f32', [...new Float32Array(mod.instance.exports.memory.buffer)].slice(0,15));
                 };
 
                 // Get exports
