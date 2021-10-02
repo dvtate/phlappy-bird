@@ -21,13 +21,13 @@
     </head>
     <body>
         <canvas width="768" height="1024" id="game"></canvas>
-
         <script>
             (async () => {
                 // Get canvas 2d context
                 const canvas = document.getElementById('game');
                 const context = canvas.getContext('2d');
 
+                // Load thwomp image
                 const thwomp = document.createElement('img');
                 thwomp.src = 'thwomp.png';
 
@@ -63,7 +63,6 @@
                 // Debugging
                 window.mod = mod;
                 window.context = context;
-                window.thwomp = thwomp;
                 window.showMem = () => {
                     console.log('i32', [...new Int32Array(mod.instance.exports.memory.buffer)].slice(0,15));
                     console.log('f32', [...new Float32Array(mod.instance.exports.memory.buffer)].slice(0,15));
