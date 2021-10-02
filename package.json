@@ -4,7 +4,7 @@
   "description": "simple game using postfix haskell and wasm",
   "main": "index.js",
   "scripts": {
-    "build": "phc file main.phs -t0 --fast > game.wat && wat2wasm game.wat",
+    "build": "phc file main.phs -t0 > game.wat && wat2wasm game.wat",
     "start": "http-server"
   },
   "repository": {
@@ -14,7 +14,7 @@
   "author": "dvtate",
   "license": "MIT",
   "devDependencies": {
-    "postfix-haskell": "^0.0.2",
+    "postfix-haskell": "^0.0.3",
     "wat2wasm": "^3.0.0"
   },
   "dependencies": {

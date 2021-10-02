@@ -1,12 +1,10 @@
-"../postfix-haskell/planning/stdlib/prelude.phs" include use
-"../postfix-haskell/planning/stdlib/bits.phs" include use
-"../postfix-haskell/planning/stdlib/math.phs" include use
-"../postfix-haskell/planning/stdlib/static_mem.phs" include use
+"./node_modules/postfix-haskell/planning/stdlib/prelude.phs" include use
+"./node_modules/postfix-haskell/planning/stdlib/bits.phs" include use
+"./node_modules/postfix-haskell/planning/stdlib/math.phs" include use
+"./node_modules/postfix-haskell/planning/stdlib/static_mem.phs" include use
 
-# Generate random float from [0,1)
-{
-    { } { F32 } Arrow { "js" "Math.random" } import @
-} $rand =
+# Generate random f32 from [0,1)
+{ } { F32 } Arrow { "js" "Math.random" } import $rand =
 
 { # Detect collision between 2 rectangles
     {   $x1 $y1 $w1 $h1
@@ -17,6 +15,7 @@
     y1 h1 + y2 > &&
 } $rect_collide =
 
+# Draw a rectangle onto the canvas
 { { $x $y $w $h $color } =
     # Set fill
     color 0xff0000 and 16 >> $r =
@@ -30,40 +29,42 @@
     { "js" "contextFillRect" } import @
 } $Game.draw_rect =
 
-
+# Canvas dimensions
 768 $Game.WIDTH =
 1024 $Game.HEIGHT =
+
+# Acceration due to gravity (pixels/frame^2)
 0.3f $Game.GRAVITY =
 
 ##
-# Gates/pipes
+# Gate - combination of a top pipe and bottom pipe
 ##
 
-{
-    I32 # x
-    F32 # y
+{   I32 # x - position on the screen
+    F32 # y - height of the opening
 } pack class $Gate =
-150 $Gate.GAP =
-100 $Gate.WIDTH =
-10 $Gate.LIP_WIDTH =
-50 $Gate.LIP_HEIGHT =
-100.0f $Gate.HIDDEN =
+{ type Gate == } { unpack pop } $.x fun
+{ type Gate == } { unpack swap pop } $.y fun
 
-{ type Gate == } { unpack pop } $Gate.x fun
-{ type Gate == } { unpack swap pop } $Gate.y fun
+# Gate constant dimensions
+150 $Gate.GAP =         # Gap between top and bottom pipes
+100 $Gate.WIDTH =       # Width of the pipe
+10 $Gate.LIP_WIDTH =    # Lip overhang
+50 $Gate.LIP_HEIGHT =   # Height of the lip sections
 
-{
+{ # Move gate to the left
     unpack { $x $y } =
     { x 1 - y } pack Gate make
 } $Gate.update =
-{
+
+{ # Randomly generate a gate
     rand $n =
-    {
-        Game.WIDTH
+    {   Game.WIDTH
         n Game.HEIGHT Gate.GAP - F32 cast *
     } pack Gate make
 } $Gate.respawn =
 
+# Overload operators for static memory
 { pop type Gate == } {
     $addr = unpack { $x $y } =
     x addr static_init
@@ -75,24 +76,23 @@
     y addr 4 + store
 } $store fun
 
-{ type Gate == } { unpack { $x $y } =
+# Rectangular Hitboxes
+{ unpack { $x $y } =
     x
     0
     Gate.WIDTH Gate.LIP_WIDTH 2 * +
     y
-} $Gate.collide_rect_top fun
-{ type Gate == } { unpack { $x $y } =
+} $Gate.hitbox_top =
+{ unpack { $x $y } =
     x
     y Gate.GAP +
     Gate.WIDTH Gate.LIP_WIDTH 2 * +
     Game.HEIGHT y -
-} $Gate.collide_rect_bot fun
+} $Gate.hitbox_bot =
 
-{ type Gate == } { pop } $Gate.draw fun
-{ unpack { $x $y } =
-    x Gate.WIDTH neg > y Gate.HIDDEN != &&
-} {
+{ # Draw gate onto canvas
     unpack { $x $y } =
+    # Top pipe
     x Gate.LIP_WIDTH +
     0
     Gate.WIDTH Gate.LIP_WIDTH 2 * -
@@ -100,6 +100,7 @@
     0x55ff55
         Game.draw_rect
 
+    # Top lip
     x
     y Gate.LIP_HEIGHT -
     Gate.WIDTH
@@ -107,6 +108,7 @@
     0x11ff11
         Game.draw_rect
 
+    # Bottom lip
     x
     y Gate.GAP +
     Gate.WIDTH
@@ -114,37 +116,37 @@
     0x11ff11
         Game.draw_rect
 
+    # Bottom pipe
     x Gate.LIP_WIDTH +
     y Gate.GAP Gate.LIP_HEIGHT + +
     Gate.WIDTH Gate.LIP_WIDTH 2 * -
     Game.HEIGHT Gate.GAP - Gate.LIP_HEIGHT - y -
     0x55ff55
         Game.draw_rect
-} $Gate.draw fun
+} $Gate.draw =
 
 ##
-# Bird
+# Bird - the thwomp
 ##
-
-{
-    F32 # y
+{   F32 # y
     F32 # dy
 } pack class $Bird =
+{ type Bird == } { unpack pop } $.y fun
+{ type Bird == } { unpack pop } $.dy fun
 
-{ type Bird == } { unpack pop } $Bird.y fun
-{ type Bird == } { unpack pop } $Bird.dy fun
-50 $Bird.X =
-40 $Bird.WIDTH =
-45 $Bird.HEIGHT =
+# Bird constant dimensions
+200 $Bird.X =       # Bird does not move side to side
+40 $Bird.WIDTH =    # Width of bird sprite
+45 $Bird.HEIGHT =   # Height of bird sprite
 
-{
+{ # Get hitbox
     unpack pop $y =
-    Bird.X y Bird.WIDTH Bird.HEIGHT
-} $Bird.collide_rect =
+    Bird.X y Bird.WIDTH 3 - Bird.HEIGHT 3 -
+} $Bird.hitbox =
 
-{ unpack { $y $dy } =
-    {
-        y dy +
+{ # Apply gravity to the bird
+    unpack { $y $dy } =
+    {   y dy +
         dy Game.GRAVITY +
     } pack Bird make
 } $Bird.update =
@@ -156,7 +158,7 @@
     { "js" "drawThwomp" } import @
 } $Bird.draw =
 
-# Memory stuff
+# Overload static memory operators
 { pop type Bird == } {
     $addr = unpack { $y $dy } =
     y addr static_init
@@ -168,17 +170,16 @@
     dy addr 4 + store
 } $store fun
 
-# Initialize static memory fields
+# Initialize static memory
 8 static_region $Game.BIRD_ADDR =
 8 static_region $Game.GATE1_ADDR =
 8 static_region $Game.GATE2_ADDR =
 { 10.0f 0.0f } pack Bird make Game.BIRD_ADDR static_init
-{ Gate.WIDTH neg Gate.HIDDEN } pack Gate make
+{ Gate.WIDTH neg 100.0f } pack Gate make
 dup Game.GATE1_ADDR static_init
 Game.GATE2_ADDR static_init
 
-# Load state from static memory
-{
+{ # Load game state from static memory
     {   Game.BIRD_ADDR "f32.load" asm
         Game.BIRD_ADDR 4 + "f32.load" asm
     } pack Bird make
@@ -190,7 +191,7 @@ Game.GATE2_ADDR static_init
     } pack Gate make
 } $Game.load =
 
-{
+{ # Draw game onto canvas
     # Get state
     Game.load { $bird $g1 $g2 } =
 
@@ -205,47 +206,37 @@ Game.GATE2_ADDR static_init
     bird Bird.draw
 } $Game.draw =
 
-{
+{ # Check if the bird is in a bad spot
     { $b $g1 $g2 } =
-
-    #{ Void I32 I32 } { Void } Arrow { "js" "console.log" } import $log2 =
-    #{ Void I32 I32 I32 F32 } { Void } Arrow { "js" "console.log" } import $log4 =
-    #g1 Gate.collide_rect_top log4
-    #1 b Bird.y 0 < log2
-    #2 b Bird.y Game.HEIGHT Bird.HEIGHT - > log2
-    #3 g1 Gate.collide_rect_top b Bird.collide_rect rect_collide log2
-    #4 g1 Gate.collide_rect_bot b Bird.collide_rect rect_collide log2
-    #5 g2 Gate.collide_rect_top b Bird.collide_rect rect_collide log2
-    #6 g2 Gate.collide_rect_bot b Bird.collide_rect rect_collide log2
-
-    b Bird.y 0 <
-    b Bird.y Game.HEIGHT Bird.HEIGHT - > ||
-    g1 Gate.collide_rect_top b Bird.collide_rect rect_collide ||
-    g1 Gate.collide_rect_bot b Bird.collide_rect rect_collide ||
-    g2 Gate.collide_rect_top b Bird.collide_rect rect_collide ||
-    g2 Gate.collide_rect_bot b Bird.collide_rect rect_collide ||
+    b .y 0 <
+    b .y Game.HEIGHT Bird.HEIGHT - > ||
+    g1 Gate.hitbox_top b Bird.hitbox rect_collide ||
+    g1 Gate.hitbox_bot b Bird.hitbox rect_collide ||
+    g2 Gate.hitbox_top b Bird.hitbox rect_collide ||
+    g2 Gate.hitbox_bot b Bird.hitbox rect_collide ||
 } $Game.is_over =
 
-{
+{ # If game not over, move things
     {
-        Gate.update $g2 = g2 unpack { $ay $ady } =
-        Gate.update $g1 = g1 unpack { $by $bdy } =
+        Gate.update $g2 = g2 unpack { $y2 $dy2 } =
+        Gate.update $g1 = g1 unpack { $y1 $dy1 } =
         { true } {
+            # No respawns
             g1 Game.GATE1_ADDR store
             g2 Game.GATE2_ADDR store
         } $act fun
-        { ay Gate.WIDTH neg < by Game.WIDTH 2 / < && } {
+        { y1 Gate.WIDTH neg < y2 Game.WIDTH 2 / < && } {
+            # Gate 1 respawn
             Gate.respawn Game.GATE1_ADDR store
             g2 Game.GATE2_ADDR store
         } $act fun
-        { by Gate.WIDTH neg < ay Game.WIDTH 2 / < && } {
+        { y2 Gate.WIDTH neg < y1 Game.WIDTH 2 / < && } {
+            # Gate2 respawn
             g1 Game.GATE1_ADDR store
             Gate.respawn Game.GATE2_ADDR store
         } $act fun
         act
     } $update_gates =
-
-    Game.load Game.is_over { Void I32 } { Void } Arrow { "js" "console.log" } import @
 
     # Get state
     { true } {
@@ -260,36 +251,25 @@ Game.GATE2_ADDR static_init
     branch
 } $Game.update =
 
-
-{ Void } { Game.draw } $draw export
-{ Void } { Game.update } $update export
-
+# Export tap handler
 { Void } {
     Game.load pop pop $bird =
     bird unpack pop $y =
-    { y -5.0f } pack Bird make Game.BIRD_ADDR store
+    { y -10.0f } pack Bird make Game.BIRD_ADDR store
 } $flap export
 
+# Export main game loop
 { Void } {
-    Game.draw
-    Game.update
+    # This is a sketchy workaround for a bug
+    Game.draw $draw =
+    {} pack Game.update
+    draw swap
 
     # Await next frame
-    { Void } { Void } Arrow { "js" "nextFrame" } import @
+    { Void Void } { Void } Arrow { "js" "nextFrame" } import @
 } $loop export
 
-{ Void } {
-    # Clear scene
-    0 0 Game.WIDTH Game.HEIGHT
-    { Void I32 I32 I32 I32 } { Void Void } Arrow
-    { "js" "contextClearRect" } import @ pop
-
-    { 323.0f 0.0f } pack Bird make Bird.draw
-
-    Gate.respawn $gg2 =
-    { gg2 unpack swap pop 50 swap } pack Gate make Gate.draw
-
-    Gate.respawn $gg =
-    { gg unpack swap pop 280 swap } pack Gate make Gate.draw
-
-} $test export
+# Export some functions for debugging
+{ Void } { Game.draw } $draw export
+{ Void } { Game.update } $update export
+{ Void } { Game.load Game.is_over } $gameOver export

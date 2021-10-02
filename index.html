@@ -47,10 +47,7 @@
                             context.fillStyle = `rgb(${r}, ${g}, ${b})`;
                         },
 
-                        contextFillRect: (...args) => {
-                            // console.log('cfrect', args);
-                            context.fillRect.bind(context)(...args);
-                        },
+                        contextFillRect: context.fillRect.bind(context),
                         contextClearRect: context.clearRect.bind(context),
 
                         nextFrame() {
@@ -58,7 +55,6 @@
                         },
 
                         drawThwomp(x, y, w, h) {
-                            // console.log('thwomp', thwomp, x, y, w, h);
                             context.drawImage(thwomp, x, y, w, h);
                         }
                     },
@@ -74,28 +70,17 @@
                 };
 
                 // Get exports
-                const { loop, flap, space_up, init }
-                    = mod.instance.exports;
+                const { loop, flap, } = mod.instance.exports;
 
-                // Listen to keyboard events to move the paddle
-                document.addEventListener('keydown', function(e) {
-                    if (e.which === 32) {
+                // Listen to jump events
+                document.addEventListener('keydown', e => {
+                    if (e.which === 32)
                         flap();
-                        console.log('space');
-                    }
                 });
+                window.addEventListener('touchstart', flap);
 
-                // Listen to keyboard events to stop the paddle if key is released
-                document.addEventListener('keyup', function(e) {
-                    if (e.which === 32) {
-                        space_up();
-                        console.log('keyup', e.which);
-                    }
-                });
-
-                // Start game loop
-                // loop();
-                // mod.instance.exports.draw();
+                // Start the game
+                setTimeout(loop, 200);
             })();
 
         </script>
