@@ -196,7 +196,7 @@
       local.set 5
       i32.const 8
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -269,7 +269,7 @@
       local.set 13
       i32.const 8
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -332,7 +332,7 @@
       local.set 21
       i32.const 16
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -405,7 +405,7 @@
       local.set 29
       i32.const 16
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -754,7 +754,7 @@
       local.set 5
       i32.const 8
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -827,7 +827,7 @@
       local.set 13
       i32.const 8
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -890,7 +890,7 @@
       local.set 21
       i32.const 16
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -963,7 +963,7 @@
       local.set 29
       i32.const 16
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -1180,7 +1180,7 @@
       local.set 5
       i32.const 8
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -1253,7 +1253,7 @@
       local.set 13
       i32.const 8
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -1316,7 +1316,7 @@
       local.set 21
       i32.const 16
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s
@@ -1389,7 +1389,7 @@
       local.set 29
       i32.const 16
       i32.load
-      i32.const 120
+      i32.const 100
       i32.add
       i32.const 200
       i32.gt_s

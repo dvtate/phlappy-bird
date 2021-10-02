@@ -80,13 +80,13 @@
 { unpack { $x $y } =
     x
     0
-    Gate.WIDTH Gate.LIP_WIDTH 2 * +
+    Gate.WIDTH
     y
 } $Gate.hitbox_top =
 { unpack { $x $y } =
     x
     y Gate.GAP +
-    Gate.WIDTH Gate.LIP_WIDTH 2 * +
+    Gate.WIDTH
     Game.HEIGHT y -
 } $Gate.hitbox_bot =
 
