@@ -13,7 +13,7 @@
     f32.load
     f32.store
     i32.const 4
-    f32.const -0x1.4p+3 (;=-10;)
+    f32.const -0x1.8p+2 (;=-6;)
     f32.store)
   (export "flap" (func 8))
   (func $loop

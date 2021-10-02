@@ -7,7 +7,6 @@
                 height: 100%;
                 margin: 0;
             }
-
             body {
                 background: black;
                 display: flex;
@@ -16,6 +15,7 @@
             }
             canvas {
                 border: 1px solid white;
+                height: calc(100vh - 100px);
             }
         </style>
     </head>
@@ -36,27 +36,24 @@
                 const wasm = await resp.arrayBuffer();
                 const mod = await WebAssembly.instantiate(wasm, {
                     js: {
+                        // js funcs
                         'console.log': console.log,
-                        'Math.random': () => {
-                            const ret = Math.random();
-                            console.log('rand', ret);
-                            return ret
-                        },
+                        'Math.random': Math.random,
 
+                        // canvas methods
                         setFill(r, g, b) {
                             context.fillStyle = `rgb(${r}, ${g}, ${b})`;
                         },
-
                         contextFillRect: context.fillRect.bind(context),
                         contextClearRect: context.clearRect.bind(context),
+                        drawThwomp(x, y, w, h) {
+                            context.drawImage(thwomp, x, y, w, h);
+                        },
 
+                        // Main game loop
                         nextFrame() {
                             requestAnimationFrame(mod.instance.exports.loop);
                         },
-
-                        drawThwomp(x, y, w, h) {
-                            context.drawImage(thwomp, x, y, w, h);
-                        }
                     },
                 });
 
@@ -69,7 +66,7 @@
                 };
 
                 // Get exports
-                const { loop, flap, } = mod.instance.exports;
+                const { loop, flap } = mod.instance.exports;
 
                 // Listen to jump events
                 document.addEventListener('keydown', e => {

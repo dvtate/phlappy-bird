@@ -255,7 +255,7 @@ Game.GATE2_ADDR static_init
 { Void } {
     Game.load pop pop $bird =
     bird unpack pop $y =
-    { y -10.0f } pack Bird make Game.BIRD_ADDR store
+    { y -6.0f } pack Bird make Game.BIRD_ADDR store
 } $flap export
 
 # Export main game loop
