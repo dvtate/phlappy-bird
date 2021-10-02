@@ -5,7 +5,7 @@
 
 # Generate random float from [0,1)
 {
-    { Void } { Void F32 } Arrow { "js" "Math.random" } import @
+    { } { F32 } Arrow { "js" "Math.random" } import @
 } $rand =
 
 { # Detect collision between 2 rectangles
@@ -31,9 +31,9 @@
 } $Game.draw_rect =
 
 
-400 $Game.WIDTH =
-700 $Game.HEIGHT =
-0.5f $Game.GRAVITY =
+768 $Game.WIDTH =
+1024 $Game.HEIGHT =
+0.3f $Game.GRAVITY =
 
 ##
 # Gates/pipes
@@ -47,17 +47,14 @@
 100 $Gate.WIDTH =
 10 $Gate.LIP_WIDTH =
 50 $Gate.LIP_HEIGHT =
-
--0.0f $Gate.HIDDEN =
+100.0f $Gate.HIDDEN =
 
 { type Gate == } { unpack pop } $Gate.x fun
 { type Gate == } { unpack swap pop } $Gate.y fun
 
 {
-    dup $g = unpack { $x $y } =
-    { g type Gate == } { x 1 - y } $act fun
-    { x Gate.WIDTH neg < y Gate.HIDDEN == || } { x Gate.HIDDEN } $act fun
-    { act } pack Gate make
+    unpack { $x $y } =
+    { x 1 - y } pack Gate make
 } $Gate.update =
 {
     rand $n =
@@ -65,7 +62,7 @@
         Game.WIDTH
         n Game.HEIGHT Gate.GAP - F32 cast *
     } pack Gate make
-} $Gate.spawn =
+} $Gate.respawn =
 
 { pop type Gate == } {
     $addr = unpack { $x $y } =
@@ -137,8 +134,13 @@
 { type Bird == } { unpack pop } $Bird.y fun
 { type Bird == } { unpack pop } $Bird.dy fun
 50 $Bird.X =
-45 $Bird.HEIGHT =
 40 $Bird.WIDTH =
+45 $Bird.HEIGHT =
+
+{
+    unpack pop $y =
+    Bird.X y Bird.WIDTH Bird.HEIGHT
+} $Bird.collide_rect =
 
 { unpack { $y $dy } =
     {
@@ -147,11 +149,11 @@
     } pack Bird make
 } $Bird.update =
 
-{
+{ # Draw a thwomp where the bird is
     unpack { $y $dy } =
-
     Bird.X y Bird.WIDTH Bird.HEIGHT
-    { Void I32 F32 I32 I32 } { Void } Arrow { "js" "drawThwomp" } import @
+    { Void I32 F32 I32 I32 } { Void } Arrow
+    { "js" "drawThwomp" } import @
 } $Bird.draw =
 
 # Memory stuff
@@ -171,7 +173,7 @@
 8 static_region $Game.GATE1_ADDR =
 8 static_region $Game.GATE2_ADDR =
 { 10.0f 0.0f } pack Bird make Game.BIRD_ADDR static_init
-{ 0 Gate.HIDDEN } pack Gate make
+{ Gate.WIDTH neg Gate.HIDDEN } pack Gate make
 dup Game.GATE1_ADDR static_init
 Game.GATE2_ADDR static_init
 
@@ -194,43 +196,80 @@ Game.GATE2_ADDR static_init
 
     # Clear scene
     0 0 Game.WIDTH Game.HEIGHT
-    { Void I32 I32 I32 I32 } { Void Void } Arrow
-    { "js" "contextClearRect" } import @ pop
+    { Void I32 I32 I32 I32 } { Void } Arrow
+    { "js" "contextClearRect" } import @
 
     # Draw scene
+    g1 Gate.draw
+    g2 Gate.draw
     bird Bird.draw
-    #g1 Gate.draw
-    #g2 Gate.draw
 } $Game.draw =
 
 {
     { $b $g1 $g2 } =
 
-    # Check collisions
-    #
+    #{ Void I32 I32 } { Void } Arrow { "js" "console.log" } import $log2 =
+    #{ Void I32 I32 I32 F32 } { Void } Arrow { "js" "console.log" } import $log4 =
+    #g1 Gate.collide_rect_top log4
+    #1 b Bird.y 0 < log2
+    #2 b Bird.y Game.HEIGHT Bird.HEIGHT - > log2
+    #3 g1 Gate.collide_rect_top b Bird.collide_rect rect_collide log2
+    #4 g1 Gate.collide_rect_bot b Bird.collide_rect rect_collide log2
+    #5 g2 Gate.collide_rect_top b Bird.collide_rect rect_collide log2
+    #6 g2 Gate.collide_rect_bot b Bird.collide_rect rect_collide log2
+
+    b Bird.y 0 <
+    b Bird.y Game.HEIGHT Bird.HEIGHT - > ||
+    g1 Gate.collide_rect_top b Bird.collide_rect rect_collide ||
+    g1 Gate.collide_rect_bot b Bird.collide_rect rect_collide ||
+    g2 Gate.collide_rect_top b Bird.collide_rect rect_collide ||
+    g2 Gate.collide_rect_bot b Bird.collide_rect rect_collide ||
 } $Game.is_over =
 
 {
-    # Get state
-    Game.load { $b $g1 $g2 } =
+    {
+        Gate.update $g2 = g2 unpack { $ay $ady } =
+        Gate.update $g1 = g1 unpack { $by $bdy } =
+        { true } {
+            g1 Game.GATE1_ADDR store
+            g2 Game.GATE2_ADDR store
+        } $act fun
+        { ay Gate.WIDTH neg < by Game.WIDTH 2 / < && } {
+            Gate.respawn Game.GATE1_ADDR store
+            g2 Game.GATE2_ADDR store
+        } $act fun
+        { by Gate.WIDTH neg < ay Game.WIDTH 2 / < && } {
+            g1 Game.GATE1_ADDR store
+            Gate.respawn Game.GATE2_ADDR store
+        } $act fun
+        act
+    } $update_gates =
 
-    # Save state
-    b Bird.update $_b =
-    g1 Gate.update $_g1 =
-    g2 Gate.update $_g2 =
-    _b Game.BIRD_ADDR store
-    _g1 Game.GATE1_ADDR store
-    _g2 Game.GATE2_ADDR store
+    Game.load Game.is_over { Void I32 } { Void } Arrow { "js" "console.log" } import @
+
+    # Get state
+    { true } {
+        # Update state
+        Game.load { $b $g1 $g2 } =
+        b Bird.update Game.BIRD_ADDR store
+        g1 g2 update_gates
+    } $branch fun
+    { Game.load Game.is_over } {
+        # Do nothing if game already over
+    } $branch fun
+    branch
 } $Game.update =
 
 
 { Void } { Game.draw } $draw export
 { Void } { Game.update } $update export
+
 { Void } {
     Game.load pop pop $bird =
     bird unpack pop $y =
-    { y 20.0f } pack Bird make Game.BIRD_ADDR store
+    { y -5.0f } pack Bird make Game.BIRD_ADDR store
 } $flap export
+
 { Void } {
     Game.draw
     Game.update
@@ -238,7 +277,6 @@ Game.GATE2_ADDR static_init
     # Await next frame
     { Void } { Void } Arrow { "js" "nextFrame" } import @
 } $loop export
-
 
 { Void } {
     # Clear scene
@@ -248,10 +286,10 @@ Game.GATE2_ADDR static_init
 
     { 323.0f 0.0f } pack Bird make Bird.draw
 
-    Gate.spawn $gg2 =
+    Gate.respawn $gg2 =
     { gg2 unpack swap pop 50 swap } pack Gate make Gate.draw
 
-    Gate.spawn $gg =
+    Gate.respawn $gg =
     { gg unpack swap pop 280 swap } pack Gate make Gate.draw
 
 } $test export

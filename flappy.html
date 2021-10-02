@@ -20,7 +20,7 @@
         </style>
     </head>
     <body>
-        <canvas width="400" height="700" id="game"></canvas>
+        <canvas width="768" height="1024" id="game"></canvas>
 
         <script>
             (async () => {
@@ -48,7 +48,7 @@
                         },
 
                         contextFillRect: (...args) => {
-                            console.log('cfrect', args);
+                            // console.log('cfrect', args);
                             context.fillRect.bind(context)(...args);
                         },
                         contextClearRect: context.clearRect.bind(context),
@@ -69,18 +69,18 @@
                 window.context = context;
                 window.thwomp = thwomp;
                 window.showMem = () => {
-                    console.log('i32', [...new Uint32Array(mod.instance.exports.memory.buffer)].slice(0,15));
+                    console.log('i32', [...new Int32Array(mod.instance.exports.memory.buffer)].slice(0,15));
                     console.log('f32', [...new Float32Array(mod.instance.exports.memory.buffer)].slice(0,15));
                 };
 
                 // Get exports
-                const { loop, space_down, space_up, init }
+                const { loop, flap, space_up, init }
                     = mod.instance.exports;
 
                 // Listen to keyboard events to move the paddle
                 document.addEventListener('keydown', function(e) {
                     if (e.which === 32) {
-                        space_down();
+                        flap();
                         console.log('space');
                     }
                 });
