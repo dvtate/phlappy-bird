@@ -3,9 +3,6 @@
 "./node_modules/postfix-haskell/planning/stdlib/math.phs" include use
 "./node_modules/postfix-haskell/planning/stdlib/static_mem.phs" include use
 
-# Generate random f32 from [0,1)
-{ } { F32 } Arrow { "js" "Math.random" } import $rand =
-
 { # Detect collision between 2 rectangles
     {   $x1 $y1 $w1 $h1
         $x2 $y2 $w2 $h2 } =
@@ -58,9 +55,12 @@
 } $Gate.update =
 
 { # Randomly generate a gate
-    rand $n =
+    # Generate random f32 from [0,1)
+    { } { F32 } Arrow { "js" "Math.random" } import @ $rand =
+
+    # Make a gate with randomized hole height
     {   Game.WIDTH
-        n Game.HEIGHT Gate.GAP - F32 cast *
+        rand Game.HEIGHT Gate.GAP - F32 cast *
     } pack Gate make
 } $Gate.respawn =
 
