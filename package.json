@@ -6,7 +6,7 @@
   "scripts": {
     "build": "phc file main.phs -t0 > game.wat && wat2wasm game.wat",
     "start": "http-server",
-    "optimize": "wasm-opt game.wasm -o game.wasm -Oz && wasm2wat game.wasm > game.wat"
+    "optimize": "wasm-opt game.wasm -o game.wasm -O3 && wasm2wat game.wasm > game.wat"
   },
   "repository": {
     "type": "git",

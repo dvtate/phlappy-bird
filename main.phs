@@ -51,7 +51,7 @@
 
 { # Move gate to the left
     unpack { $x $y } =
-    { x 1 - y } pack Gate make
+    { x 2 - y } pack Gate make
 } $Gate.update =
 
 { # Randomly generate a gate

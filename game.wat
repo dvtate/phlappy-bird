@@ -358,14 +358,14 @@
       f32.store
       i32.const 8
       i32.load
-      i32.const 1
+      i32.const 2
       i32.sub
       i32.const 384
       i32.lt_s
       i32.const 0
       i32.const 16
       i32.load
-      i32.const 1
+      i32.const 2
       i32.sub
       i32.const -100
       i32.lt_s
@@ -374,7 +374,7 @@
         i32.const 8
         i32.const 8
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.store
         i32.const 12
@@ -392,14 +392,14 @@
       else
         i32.const 16
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.const 384
         i32.lt_s
         i32.const 0
         i32.const 8
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.const -100
         i32.lt_s
@@ -417,7 +417,7 @@
           i32.const 8
           i32.const 8
           i32.load
-          i32.const 1
+          i32.const 2
           i32.sub
           i32.store
           i32.const 12
@@ -428,7 +428,7 @@
         i32.const 16
         i32.const 16
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.store
         i32.const 20
@@ -774,14 +774,14 @@
       f32.store
       i32.const 8
       i32.load
-      i32.const 1
+      i32.const 2
       i32.sub
       i32.const 384
       i32.lt_s
       i32.const 0
       i32.const 16
       i32.load
-      i32.const 1
+      i32.const 2
       i32.sub
       i32.const -100
       i32.lt_s
@@ -790,7 +790,7 @@
         i32.const 8
         i32.const 8
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.store
         i32.const 12
@@ -808,14 +808,14 @@
       else
         i32.const 16
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.const 384
         i32.lt_s
         i32.const 0
         i32.const 8
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.const -100
         i32.lt_s
@@ -833,7 +833,7 @@
           i32.const 8
           i32.const 8
           i32.load
-          i32.const 1
+          i32.const 2
           i32.sub
           i32.store
           i32.const 12
@@ -844,7 +844,7 @@
         i32.const 16
         i32.const 16
         i32.load
-        i32.const 1
+        i32.const 2
         i32.sub
         i32.store
         i32.const 20
