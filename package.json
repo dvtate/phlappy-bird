@@ -1,12 +1,12 @@
 {
-  "name": "game",
+  "name": "phlappy-bird",
   "version": "1.0.0",
-  "description": "simple game using postfix haskell and wasm",
+  "description": "simple flappy-bird clone demo that uses postfix haskell and wasm",
   "main": "index.js",
   "scripts": {
-    "build": "phc file main.phs -t0 > game.wat && wat2wasm game.wat",
+    "build": "phc file ./src/main.phs -t0 > ./dist/game.wat && wat2wasm ./dist/game.wat -o ./dist/game.wasm",
     "start": "http-server",
-    "optimize": "wasm-opt game.wasm -o game.wasm -O3 && wasm2wat game.wasm > game.wat"
+    "optimize": "wasm-opt ./dist/game.wasm -o ./dist/game.wasm -O3 && wasm2wat ./dist/game.wasm > ./dist/game.wat"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
   "author": "dvtate",
   "license": "MIT",
   "devDependencies": {
-    "postfix-haskell": "^0.0.3",
+    "postfix-haskell": "^0.0.5",
     "wat2wasm": "^3.0.0"
   },
   "dependencies": {

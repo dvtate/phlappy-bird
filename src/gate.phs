@@ -1,0 +1,91 @@
+"../node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
+"../node_modules/postfix-haskell/planning/stdlib/static_mem.phs" require $mem =
+"./engine.phs" require $game =
+
+##
+# Gate - combination of a top pipe and bottom pipe
+##
+
+{   I32 # x - position on the screen
+    F32 # y - height of the opening
+} pack class $Gate =
+
+# Gate constant dimensions
+150 $GAP =          # Gap between top and bottom pipes
+100 $WIDTH =        # Width of the pipe
+10 $LIP_WIDTH =     # Lip overhang
+50 $LIP_HEIGHT =    # Height of the lip sections
+2 $SPEED =          # How fast the gates move across the screen
+
+{ # Move gate to the left
+    unpack ( $x $y ) =
+    { x SPEED - y } pack Gate make
+} $update =
+
+{ # Randomly generate a gate
+    # Make a gate with randomized hole height
+    {   game.WIDTH
+        game.rand game.HEIGHT GAP - F32 cast *
+    } pack Gate make
+} $respawn =
+
+# Overload operators for static memory
+{ pop type Gate == } {
+    $addr = unpack ( $x $y ) =
+    x addr mem.static_init
+    y addr 4 + mem.static_init
+} $mem.static_init fun
+{ pop type Gate == } {
+    $addr = unpack ( $x $y ) =
+    x addr mem.store
+    y addr 4 + mem.store
+} $mem.store fun
+
+# Rectangular Hitboxes
+{ unpack ( $x $y ) =
+    x
+    0
+    WIDTH
+    y
+} $hitbox_top =
+{ unpack ( $x $y ) =
+    x
+    y GAP +
+    WIDTH
+    game.HEIGHT y -
+} $hitbox_bot =
+
+{ # Draw gate onto canvas
+    unpack ( $x $y ) =
+    # Top pipe
+    x LIP_WIDTH +
+    0
+    WIDTH LIP_WIDTH 2 * -
+    y LIP_HEIGHT -
+    0x55ff55
+        game.rect_draw
+
+    # Top lip
+    x
+    y LIP_HEIGHT -
+    WIDTH
+    LIP_HEIGHT
+    0x11ff11
+        game.rect_draw
+
+    # Bottom lip
+    x
+    y GAP +
+    WIDTH
+    LIP_HEIGHT
+    0x11ff11
+        game.rect_draw
+
+    # Bottom pipe
+    x LIP_WIDTH +
+    y GAP LIP_HEIGHT + +
+    WIDTH LIP_WIDTH 2 * -
+    game.HEIGHT GAP - LIP_HEIGHT - y -
+    0x55ff55
+        game.rect_draw
+} $draw =

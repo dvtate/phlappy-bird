@@ -1,0 +1,112 @@
+"../node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
+"../node_modules/postfix-haskell/planning/stdlib/static_mem.phs" require use
+"./engine.phs" require use
+"./gate.phs" require $gate =
+"./bird.phs" require $bird =
+
+# Initialize static memory
+8 static_region $BIRD_ADDR =
+8 static_region $GATE1_ADDR =
+8 static_region $GATE2_ADDR =
+{ 10.0f 0.0f } pack bird.Bird make BIRD_ADDR static_init
+{ gate.WIDTH neg 100.0f } pack gate.Gate make
+dup GATE1_ADDR static_init
+GATE2_ADDR static_init
+
+{ # Load game state from static memory
+    {   BIRD_ADDR "f32.load" asm
+        BIRD_ADDR 4 + "f32.load" asm
+    } pack bird.Bird make
+    {   GATE1_ADDR "i32.load" asm
+        GATE1_ADDR 4 + "f32.load" asm
+    } pack gate.Gate make
+    {   GATE2_ADDR "i32.load" asm
+        GATE2_ADDR 4 + "f32.load" asm
+    } pack gate.Gate make
+} $load =
+
+{ # Draw game onto canvas
+    # Get state
+    load ( $b $g1 $g2 ) =
+
+    # Clear scene
+    clear_screen
+
+    # Draw scene
+    g1 gate.draw
+    g2 gate.draw
+    b bird.draw
+} $draw =
+
+{ # Check if the bird is in a bad spot
+    ( $b $g1 $g2 ) =
+    b bird.y 0 <
+    b bird.y HEIGHT bird.HEIGHT - > ||
+    g1 gate.hitbox_top b bird.hitbox rect_collide ||
+    g1 gate.hitbox_bot b bird.hitbox rect_collide ||
+    g2 gate.hitbox_top b bird.hitbox rect_collide ||
+    g2 gate.hitbox_bot b bird.hitbox rect_collide ||
+} $is_over =
+
+{ # If game not over, move things
+    { # Spawn and move the gates as needed
+        # Move the gates to the left
+        gate.update $g2 =
+        g2 unpack ( $y2 $dy2 ) =
+        gate.update $g1 =
+        g1 unpack ( $y1 $dy1 ) =
+
+        # Determine respawns
+        { true } {
+            # No respawns
+            g1 GATE1_ADDR store
+            g2 GATE2_ADDR store
+        } $act fun
+        { y1 gate.WIDTH neg < y2 WIDTH 2 / < && } {
+            # Gate 1 respawn
+            gate.respawn GATE1_ADDR store
+            g2 GATE2_ADDR store
+        } $act fun
+        { y2 gate.WIDTH neg < y1 WIDTH 2 / < && } {
+            # Gate2 respawn
+            g1 GATE1_ADDR store
+            gate.respawn GATE2_ADDR store
+        } $act fun
+        act
+    } $update_gates =
+
+    # Get state
+    { true } {
+        # Update state
+        load ( $b $g1 $g2 ) =
+        b bird.update BIRD_ADDR store
+        g1 g2 update_gates
+    } $branch fun
+    { load is_over } {
+        # Do nothing if game already over
+    } $branch fun
+    branch
+} $update =
+
+# Export tap handler
+( Unit ) {
+    load pop pop $b =
+    b unpack pop $y =
+    { y -6.0f } pack bird.Bird make BIRD_ADDR store
+} "flap" export
+
+# Export main game loop
+( Unit ) {
+    # This is a sketchy workaround for a bug
+    draw $draw =
+    {} pack update
+    draw swap
+
+    # Await next frame
+    { Unit Unit } { Unit } Arrow { "js" "nextFrame" } import @
+} "loop" export
+
+# Export some functions for debugging
+( Unit ) { draw } "draw" export
+( Unit ) { update } "update" export
+( Unit ) { load is_over } "gameOver" export
