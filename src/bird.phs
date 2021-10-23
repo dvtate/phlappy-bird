@@ -5,44 +5,44 @@
 ##
 # Bird - the thwomp
 ##
-{   F32 # y
+(   F32 # y
     F32 # dy
-} pack class $Bird =
-{ type Bird == } { unpack pop } $y fun
-{ type Bird == } { unpack pop } $dy fun
+) class $Bird =
+((Bird): 1 ) (: unpack pop ) $y fun
+((Bird): 1 ) (: unpack swap pop ) $dy fun
 
 # Bird constant dimensions
 200 $X =       # Bird does not move side to side
 40 $WIDTH =    # Width of bird sprite
 45 $HEIGHT =   # Height of bird sprite
 
-{ # Get hitbox
+((Bird): # Get hitbox
     unpack pop $y =
     X y WIDTH 3 - HEIGHT 3 -
-} $hitbox =
+) $hitbox =
 
-{ # Apply gravity to the bird
+((Bird): # Apply gravity to the bird
     unpack ( $y $dy ) =
-    {   y dy +
+    (   y dy +
         dy game.GRAVITY +
-    } pack Bird make
-} $update =
+    ) Bird make
+) $update =
 
-{ # Draw a thwomp where the bird is
+((Unit Bird): # Draw a thwomp where the bird is
     unpack ( $y $dy ) =
     X y WIDTH HEIGHT
-    { Unit I32 F32 I32 I32 } { Unit } Arrow
-    { "js" "drawThwomp" } import @
-} $draw =
+    ( Unit I32 F32 I32 I32 ) ( Unit ) Arrow
+    ( "js" "drawThwomp" ) import @
+) $draw =
 
 # Overload static memory operators
-{ pop type Bird == } {
+((Bird I32): 1 ) (:
     $addr = unpack ( $y $dy ) =
     y addr static_init
     dy addr 4 + static_init
-} $mem.static_init fun
-{ pop type Bird == } {
+) $mem.static_init fun
+((Unit Bird I32): 1 ) (:
     $addr = unpack ( $y $dy ) =
     y addr store
     dy addr 4 + store
-} $mem.store fun
+) $mem.store fun

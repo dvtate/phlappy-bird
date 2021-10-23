@@ -6,9 +6,9 @@
 # Gate - combination of a top pipe and bottom pipe
 ##
 
-{   I32 # x - position on the screen
+(   I32 # x - position on the screen
     F32 # y - height of the opening
-} pack class $Gate =
+) class $Gate =
 
 # Gate constant dimensions
 150 $GAP =          # Gap between top and bottom pipes
@@ -17,45 +17,45 @@
 50 $LIP_HEIGHT =    # Height of the lip sections
 2 $SPEED =          # How fast the gates move across the screen
 
-{ # Move gate to the left
+((Gate) (Gate): # Move gate to the left
     unpack ( $x $y ) =
-    { x SPEED - y } pack Gate make
-} $update =
+    ( x SPEED - y ) Gate make
+) $update =
 
-{ # Randomly generate a gate
+(()(Gate): # Randomly generate a gate
     # Make a gate with randomized hole height
-    {   game.WIDTH
+    (   game.WIDTH
         game.rand game.HEIGHT GAP - F32 cast *
-    } pack Gate make
-} $respawn =
+    ) Gate make
+) $respawn =
 
 # Overload operators for static memory
-{ pop type Gate == } {
+((Gate I32): 1 ) (:
     $addr = unpack ( $x $y ) =
     x addr mem.static_init
     y addr 4 + mem.static_init
-} $mem.static_init fun
-{ pop type Gate == } {
+) $mem.static_init fun
+((Unit Gate I32): 1 ) (:
     $addr = unpack ( $x $y ) =
     x addr mem.store
     y addr 4 + mem.store
-} $mem.store fun
+) $mem.store fun
 
 # Rectangular Hitboxes
-{ unpack ( $x $y ) =
+((Gate): unpack ( $x $y ) =
     x
     0
     WIDTH
     y
-} $hitbox_top =
-{ unpack ( $x $y ) =
+) $hitbox_top =
+((Gate): unpack ( $x $y ) =
     x
     y GAP +
     WIDTH
     game.HEIGHT y -
-} $hitbox_bot =
+) $hitbox_bot =
 
-{ # Draw gate onto canvas
+((Unit Gate): # Draw gate onto canvas
     unpack ( $x $y ) =
     # Top pipe
     x LIP_WIDTH +
@@ -88,4 +88,4 @@
     game.HEIGHT GAP - LIP_HEIGHT - y -
     0x55ff55
         game.rect_draw
-} $draw =
+) $draw =
