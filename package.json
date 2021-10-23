@@ -15,7 +15,7 @@
   "author": "dvtate",
   "license": "MIT",
   "devDependencies": {
-    "postfix-haskell": "^0.0.5",
+    "postfix-haskell": "^0.0.6",
     "wat2wasm": "^3.0.0"
   },
   "dependencies": {
