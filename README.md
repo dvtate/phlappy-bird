@@ -10,3 +10,6 @@ This is a game made to demonstrate the capabilities of [my language](https://git
 
 ## Playing
 The game is pretty simple, click the box to start then move the paddle with arrow keys. If you loose the ball press space to get another one.
+
+## Demo
+A live demo is available here: https://dvtate.github.io/phlappy-bird/dist/
