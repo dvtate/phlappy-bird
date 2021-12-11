@@ -2,10 +2,7 @@
 "../node_modules/postfix-haskell/planning/stdlib/static_mem.phs" require $mem =
 "./engine.phs" require $game =
 
-##
-# Gate - combination of a top pipe and bottom pipe
-##
-
+## Gate - combination of a top pipe and bottom pipe
 (   I32 # x - position on the screen
     F32 # y - height of the opening
 ) class $Gate =
@@ -22,7 +19,8 @@
     ( x SPEED - y ) Gate make
 ) $update =
 
-(()(Gate): # Randomly generate a gate
+# Randomly generate a gate
+(()(Gate):
     # Make a gate with randomized hole height
     (   game.WIDTH
         game.rand game.HEIGHT GAP - F32 cast *

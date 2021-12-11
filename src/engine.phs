@@ -1,4 +1,7 @@
+# Standard operators and lanugage functionality
 "../node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
+
+# Bitwise operators
 "../node_modules/postfix-haskell/planning/stdlib/bits.phs" require use
 
 # Canvas dimensions
@@ -8,7 +11,9 @@
 # Acceration due to gravity (pixels/frame^2)
 0.3f $GRAVITY =
 
-(: # Detect collision between 2 rectangles
+# Detect collision between 2 rectangles
+I32 I64 F32 F64 | | | $Num =
+(:
     (   $x1 $y1 $w1 $h1
         $x2 $y2 $w2 $h2 ) =
     x1 x2 w2 + <
@@ -17,13 +22,22 @@
     y1 h1 + y2 > &&
 ) $rect_collide =
 
-(: # Draw a rectangle onto the canvas
-    # Set fill
+# Canvas imports
+( Unit I32 I32 I32 ) ( Unit ) Arrow
+    ( "js" "setFill" ) import
+    $js_setFill =
+( Unit I32 I32 I32 I32 ) ( Unit ) Arrow
+    ( "js" "contextClearRect" ) import
+    $js_clearRect =
+
+# Draw a rectangle onto the canvas
+(:
+    # Set fill color
     ( $x $y $w $h $color ) =
     color 0xff0000 and 16 >> $r =
     color 0xff00 and 8 >> $g =
     color 0xff and $b =
-    r g b ( Unit I32 I32 I32 ) ( Unit ) Arrow ( "js" "setFill" ) import @
+    r g b js_setFill
 
     # Draw rectangle
     x y w h
@@ -31,10 +45,9 @@
     ( "js" "contextFillRect" ) import @
 ) $rect_draw =
 
-((Unit) (Unit): # Clear scene
-    0 0 WIDTH HEIGHT
-    ( Unit I32 I32 I32 I32 ) ( Unit ) Arrow
-    ( "js" "contextClearRect" ) import @
+# Clear scene
+((Unit) (Unit):
+    0 0 WIDTH HEIGHT js_clearRect
 ) $clear_screen =
 
 # Generate random f32 from [0,1)

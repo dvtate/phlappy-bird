@@ -7,9 +7,9 @@
   (type (;5;) (func (param i32 f32 i32 f32)))
   (type (;6;) (func (result i32)))
   (type (;7;) (func (result f32)))
-  (import "js" "contextClearRect" (func (;0;) (type 3)))
-  (import "js" "Math.random" (func (;1;) (type 7)))
-  (import "js" "setFill" (func (;2;) (type 2)))
+  (import "js" "setFill" (func (;0;) (type 2)))
+  (import "js" "contextClearRect" (func (;1;) (type 3)))
+  (import "js" "Math.random" (func (;2;) (type 7)))
   (import "js" "contextFillRect" (func (;3;) (type 4)))
   (import "js" "contextFillRect" (func (;4;) (type 1)))
   (import "js" "contextFillRect" (func (;5;) (type 5)))
@@ -29,11 +29,11 @@
     i32.const 0
     i32.const 768
     i32.const 1024
-    call 0
+    call 1
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 10
@@ -48,7 +48,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 12
@@ -61,7 +61,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 12
@@ -74,7 +74,7 @@
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 10
@@ -92,7 +92,7 @@
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 10
@@ -107,7 +107,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 20
@@ -120,7 +120,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 20
@@ -133,7 +133,7 @@
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 10
@@ -425,7 +425,7 @@
         i32.const 768
         i32.store
         i32.const 20
-        call 1
+        call 2
         f32.const 0x1.b5p+9 (;=874;)
         f32.mul
         f32.store
@@ -453,7 +453,7 @@
           i32.const 768
           i32.store
           i32.const 12
-          call 1
+          call 2
           f32.const 0x1.b5p+9 (;=874;)
           f32.mul
           f32.store
@@ -487,11 +487,11 @@
     i32.const 0
     i32.const 768
     i32.const 1024
-    call 0
+    call 1
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 10
@@ -506,7 +506,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 12
@@ -519,7 +519,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 12
@@ -532,7 +532,7 @@
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 8
     i32.load
     i32.const 10
@@ -550,7 +550,7 @@
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 10
@@ -565,7 +565,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 20
@@ -578,7 +578,7 @@
     i32.const 17
     i32.const 255
     i32.const 17
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 20
@@ -591,7 +591,7 @@
     i32.const 85
     i32.const 255
     i32.const 85
-    call 2
+    call 0
     i32.const 16
     i32.load
     i32.const 10
@@ -885,7 +885,7 @@
         i32.const 768
         i32.store
         i32.const 20
-        call 1
+        call 2
         f32.const 0x1.b5p+9 (;=874;)
         f32.mul
         f32.store
@@ -913,7 +913,7 @@
           i32.const 768
           i32.store
           i32.const 12
-          call 1
+          call 2
           f32.const 0x1.b5p+9 (;=874;)
           f32.mul
           f32.store

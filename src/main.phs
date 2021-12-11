@@ -13,7 +13,8 @@
 dup GATE1_ADDR static_init
 GATE2_ADDR static_init
 
-(()(bird.Bird gate.Gate dup): # Load game state from static memory
+# Load game state from static memory
+(()(bird.Bird gate.Gate dup):
     (   BIRD_ADDR "f32.load" asm
         BIRD_ADDR 4 + "f32.load" asm
     ) bird.Bird make
@@ -25,7 +26,8 @@ GATE2_ADDR static_init
     ) gate.Gate make
 ) $load =
 
-((Unit) (Unit): # Draw game onto canvas
+# Draw game onto canvas
+((Unit) (Unit):
     # Get state
     load ( $b $g1 $g2 ) =
 
@@ -48,7 +50,7 @@ GATE2_ADDR static_init
     g2 gate.hitbox_bot b bird.hitbox rect_collide ||
 ) $is_over =
 
-(: # If game not over, move things
+((Unit): # If game not over, move things
     (: # Spawn and move the gates as needed
         # Move the gates to the left
         gate.update $g2 =
@@ -98,9 +100,9 @@ GATE2_ADDR static_init
 # Export main game loop
 ( Unit ) (:
     # This is a sketchy workaround for a bug
-    draw $draw =
+    draw $d =
     () update
-    draw swap
+    d swap
 
     # Await next frame
     ( Unit Unit ) ( Unit ) Arrow ( "js" "nextFrame" ) import @
