@@ -92,9 +92,7 @@ GATE2_ADDR static_init
 
 # Export tap handler
 ( Unit ) (:
-    load pop pop $b =
-    b unpack pop $y =
-    ( y -6.0f ) bird.Bird make BIRD_ADDR store
+    load pop pop bird.flap BIRD_ADDR store
 ) "flap" export
 
 # Export main game loop

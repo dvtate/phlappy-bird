@@ -28,6 +28,11 @@
     ) Bird make
 ) $update =
 
+((Bird): # Update trajectory
+    unpack ( $y $_ ) =
+    ( y -6.0f ) Bird make
+) $flap =
+
 ((Unit Bird): # Draw a thwomp where the bird is
     unpack ( $y $dy ) =
     X y WIDTH HEIGHT
