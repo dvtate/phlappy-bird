@@ -1,6 +1,0 @@
-"./node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
-
-{ true } { 1 } $fac fun
-{ 1 > } { dup 1 - fac * } $fac fun
-$fac ~ rec $_ =
-(I32) { _ } "fac" export
