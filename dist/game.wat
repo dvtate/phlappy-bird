@@ -1166,11 +1166,13 @@
       end
     end
     local.get 0)
+  (table (;0;) 0 funcref)
   (memory (;0;) 1)
+  (export "__table" (table 0))
+  (export "__memory" (memory 0))
   (export "flap" (func 8))
   (export "loop" (func 9))
   (export "draw" (func 10))
   (export "update" (func 11))
   (export "gameOver" (func 12))
-  (export "memory" (memory 0))
   (data (;0;) (i32.const 2) " A\00\00\00\00\9c\ff\ff\ff\00\00\c8B\9c\ff\ff\ff\00\00\c8B"))
