@@ -14,4 +14,4 @@ This is a game made to demonstrate the capabilities of [my language](https://git
 - If you hit a pipe, simply reload the page
 
 ## Demo
-A live demo is available here: [https://dvtate.github.io/phlappy-bird/dist/](https://dvtate.github.io/phlappy-bird/dist/)
+A live demo is available here: [https://dvtate.github.io/phlappy-bird/public/](https://dvtate.github.io/phlappy-bird/public/)
