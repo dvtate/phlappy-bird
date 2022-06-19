@@ -24,7 +24,7 @@
     f32.const -0x1.8p+2 (;=-6;)
     f32.store)
   (func (;9;) (type 0)
-    (local i32 i32 i32)
+    (local i32 i32)
     i32.const 0
     i32.const 0
     i32.const 768
@@ -175,11 +175,6 @@
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 12
-      f32.load
-      i32.const 0
-      f32.load
-      f32.gt
       i32.const 0
       f32.load
       f32.const 0x1.5p+5 (;=42;)
@@ -194,45 +189,34 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 12
+      f32.load
+      i32.const 0
+      f32.load
+      f32.gt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 8
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 0
-      f32.load
-      i32.const 12
-      f32.load
-      f32.const 0x1.2cp+7 (;=150;)
-      f32.add
-      f32.const 0x1p+10 (;=1024;)
-      i32.const 12
-      f32.load
-      f32.sub
-      f32.add
-      f32.lt
       i32.const 12
       f32.load
       f32.const 0x1.2cp+7 (;=150;)
@@ -250,38 +234,41 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 0
+      f32.load
+      i32.const 12
+      f32.load
+      f32.const 0x1.2cp+7 (;=150;)
+      f32.add
+      f32.const 0x1p+10 (;=1024;)
+      i32.const 12
+      f32.load
+      f32.sub
+      f32.add
+      f32.lt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 8
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 20
-      f32.load
-      i32.const 0
-      f32.load
-      f32.gt
       i32.const 0
       f32.load
       f32.const 0x1.5p+5 (;=42;)
@@ -296,45 +283,34 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 20
+      f32.load
+      i32.const 0
+      f32.load
+      f32.gt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
-    if  ;; label = @1
-      i32.const 0
-      f32.load
-      i32.const 20
-      f32.load
-      f32.const 0x1.2cp+7 (;=150;)
-      f32.add
-      f32.const 0x1p+10 (;=1024;)
-      i32.const 20
-      f32.load
-      f32.sub
-      f32.add
-      f32.lt
+    if (result i32)  ;; label = @1
       i32.const 20
       f32.load
       f32.const 0x1.2cp+7 (;=150;)
@@ -352,31 +328,39 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 0
+      f32.load
+      i32.const 20
+      f32.load
+      f32.const 0x1.2cp+7 (;=150;)
+      f32.add
+      f32.const 0x1p+10 (;=1024;)
+      i32.const 20
+      f32.load
+      f32.sub
+      f32.add
+      f32.lt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+    else
+      local.get 0
     end
-    local.get 0
     i32.eqz
     if  ;; label = @1
       i32.const 0
@@ -399,17 +383,15 @@
       i32.const 384
       i32.lt_s
       local.set 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 2
       i32.sub
       i32.const -100
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
+      select
       if  ;; label = @2
         i32.const 8
         i32.const 8
@@ -437,17 +419,15 @@
         i32.const 384
         i32.lt_s
         local.set 0
+        i32.const 0
+        local.get 0
         i32.const 8
         i32.load
         i32.const 2
         i32.sub
         i32.const -100
         i32.ge_s
-        if  ;; label = @3
-          i32.const 0
-          local.set 0
-        end
-        local.get 0
+        select
         if  ;; label = @3
           i32.const 8
           i32.const 768
@@ -613,7 +593,7 @@
     i32.const 45
     call 6)
   (func (;11;) (type 0)
-    (local i32 i32 i32)
+    (local i32 i32)
     i32.const 0
     f32.load
     f32.const 0x1.e98p+9 (;=979;)
@@ -635,11 +615,6 @@
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 12
-      f32.load
-      i32.const 0
-      f32.load
-      f32.gt
       i32.const 0
       f32.load
       f32.const 0x1.5p+5 (;=42;)
@@ -654,45 +629,34 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 12
+      f32.load
+      i32.const 0
+      f32.load
+      f32.gt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 8
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 0
-      f32.load
-      i32.const 12
-      f32.load
-      f32.const 0x1.2cp+7 (;=150;)
-      f32.add
-      f32.const 0x1p+10 (;=1024;)
-      i32.const 12
-      f32.load
-      f32.sub
-      f32.add
-      f32.lt
       i32.const 12
       f32.load
       f32.const 0x1.2cp+7 (;=150;)
@@ -710,38 +674,41 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 0
+      f32.load
+      i32.const 12
+      f32.load
+      f32.const 0x1.2cp+7 (;=150;)
+      f32.add
+      f32.const 0x1p+10 (;=1024;)
+      i32.const 12
+      f32.load
+      f32.sub
+      f32.add
+      f32.lt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 8
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 20
-      f32.load
-      i32.const 0
-      f32.load
-      f32.gt
       i32.const 0
       f32.load
       f32.const 0x1.5p+5 (;=42;)
@@ -756,45 +723,34 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 20
+      f32.load
+      i32.const 0
+      f32.load
+      f32.gt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
-    if  ;; label = @1
-      i32.const 0
-      f32.load
-      i32.const 20
-      f32.load
-      f32.const 0x1.2cp+7 (;=150;)
-      f32.add
-      f32.const 0x1p+10 (;=1024;)
-      i32.const 20
-      f32.load
-      f32.sub
-      f32.add
-      f32.lt
+    if (result i32)  ;; label = @1
       i32.const 20
       f32.load
       f32.const 0x1.2cp+7 (;=150;)
@@ -812,31 +768,39 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 0
+      f32.load
+      i32.const 20
+      f32.load
+      f32.const 0x1.2cp+7 (;=150;)
+      f32.add
+      f32.const 0x1p+10 (;=1024;)
+      i32.const 20
+      f32.load
+      f32.sub
+      f32.add
+      f32.lt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+    else
+      local.get 0
     end
-    local.get 0
     i32.eqz
     if  ;; label = @1
       i32.const 0
@@ -859,17 +823,15 @@
       i32.const 384
       i32.lt_s
       local.set 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 2
       i32.sub
       i32.const -100
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
+      select
       if  ;; label = @2
         i32.const 8
         i32.const 8
@@ -897,17 +859,15 @@
         i32.const 384
         i32.lt_s
         local.set 0
+        i32.const 0
+        local.get 0
         i32.const 8
         i32.load
         i32.const 2
         i32.sub
         i32.const -100
         i32.ge_s
-        if  ;; label = @3
-          i32.const 0
-          local.set 0
-        end
-        local.get 0
+        select
         if  ;; label = @3
           i32.const 8
           i32.const 768
@@ -942,7 +902,7 @@
       end
     end)
   (func (;12;) (type 6) (result i32)
-    (local i32 i32 i32)
+    (local i32 i32)
     i32.const 0
     f32.load
     f32.const 0x1.e98p+9 (;=979;)
@@ -964,11 +924,6 @@
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 12
-      f32.load
-      i32.const 0
-      f32.load
-      f32.gt
       i32.const 0
       f32.load
       f32.const 0x1.5p+5 (;=42;)
@@ -983,45 +938,34 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 12
+      f32.load
+      i32.const 0
+      f32.load
+      f32.gt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 8
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 0
-      f32.load
-      i32.const 12
-      f32.load
-      f32.const 0x1.2cp+7 (;=150;)
-      f32.add
-      f32.const 0x1p+10 (;=1024;)
-      i32.const 12
-      f32.load
-      f32.sub
-      f32.add
-      f32.lt
       i32.const 12
       f32.load
       f32.const 0x1.2cp+7 (;=150;)
@@ -1039,38 +983,41 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 0
+      f32.load
+      i32.const 12
+      f32.load
+      f32.const 0x1.2cp+7 (;=150;)
+      f32.add
+      f32.const 0x1p+10 (;=1024;)
+      i32.const 12
+      f32.load
+      f32.sub
+      f32.add
+      f32.lt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 8
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
     if  ;; label = @1
-      i32.const 20
-      f32.load
-      i32.const 0
-      f32.load
-      f32.gt
       i32.const 0
       f32.load
       f32.const 0x1.5p+5 (;=42;)
@@ -1085,45 +1032,34 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 20
+      f32.load
+      i32.const 0
+      f32.load
+      f32.gt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
+      local.set 0
     end
     local.get 0
     i32.eqz
-    if  ;; label = @1
-      i32.const 0
-      f32.load
-      i32.const 20
-      f32.load
-      f32.const 0x1.2cp+7 (;=150;)
-      f32.add
-      f32.const 0x1p+10 (;=1024;)
-      i32.const 20
-      f32.load
-      f32.sub
-      f32.add
-      f32.lt
+    if (result i32)  ;; label = @1
       i32.const 20
       f32.load
       f32.const 0x1.2cp+7 (;=150;)
@@ -1141,31 +1077,39 @@
       i32.const 200
       i32.gt_s
       local.set 0
+      i32.const 0
+      f32.load
+      i32.const 20
+      f32.load
+      f32.const 0x1.2cp+7 (;=150;)
+      f32.add
+      f32.const 0x1p+10 (;=1024;)
+      i32.const 20
+      f32.load
+      f32.sub
+      f32.add
+      f32.lt
+      i32.const 0
+      local.get 1
+      i32.const 0
+      i32.const 0
+      local.get 0
       i32.const 16
       i32.load
       i32.const 237
       i32.ge_s
-      if  ;; label = @2
-        i32.const 0
-        local.set 0
-      end
-      local.get 0
-      i32.eqz
-      if  ;; label = @2
-        i32.const 0
-        local.set 1
-      end
-      i32.const 0
-      local.get 1
+      select
+      select
       select
       local.tee 0
-      i32.eqz
-      if  ;; label = @2
+      if (result i32)  ;; label = @2
+        local.get 0
+      else
         i32.const 0
-        local.set 0
       end
-    end
-    local.get 0)
+    else
+      local.get 0
+    end)
   (table (;0;) 0 funcref)
   (memory (;0;) 1)
   (export "__table" (table 0))

@@ -4,10 +4,10 @@
   "description": "simple flappy-bird clone demo that uses postfix haskell and wasm",
   "main": "index.js",
   "scripts": {
-    "build": "phc file ./src/main.phs --no-rt=true -o ./dist/game.wat && wat2wasm ./dist/game.wat -o ./dist/game.wasm",
-    "fast-build": "phc file ./src/main.phs --no-rt=true --fast -o ./dist/game.wat && wat2wasm ./dist/game.wat -o ./dist/game.wasm",
+    "build": "phc file ./src/main.phs --no-rt=true -O=true -o ./public/game.wat && wat2wasm ./public/game.wat -o ./public/game.wasm",
+    "fast-build": "phc file ./src/main.phs --no-rt=true --fast -o ./public/game.wat && wat2wasm ./public/game.wat -o ./public/game.wasm",
     "start": "http-server .",
-    "optimize": "wasm-opt ./dist/game.wasm -o ./dist/game.wasm -O3 && wasm2wat ./dist/game.wasm > ./dist/game.wat"
+    "optimize": "wasm-opt ./public/game.wasm -o ./public/game.wasm -O3 && wasm2wat ./public/game.wasm > ./public/game.wat"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "wat2wasm": "^3.0.0"
   },
   "dependencies": {
-    "http-server": "^14.1.0"
+    "http-server": "^14.1.0",
+    "wabt": "^1.0.29"
   }
 }
