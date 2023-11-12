@@ -1,5 +1,5 @@
-"../node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
-"../node_modules/postfix-haskell/planning/stdlib/mem.phs" require use
+"../node_modules/postfix-haskell/std/lang.phs" require use
+"../node_modules/postfix-haskell/std/mem.phs" require use
 "./engine.phs" require use
 "./gate.phs" require $gate =
 "./bird.phs" require $bird =

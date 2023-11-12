@@ -1,5 +1,5 @@
-"../node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
-"../node_modules/postfix-haskell/planning/stdlib/mem.phs" require $mem =
+"../node_modules/postfix-haskell/std/lang.phs" require use
+"../node_modules/postfix-haskell/std/mem.phs" require $mem =
 "./engine.phs" require $game =
 
 ## Gate - combination of a top pipe and bottom pipe

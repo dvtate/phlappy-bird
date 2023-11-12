@@ -1,8 +1,5 @@
-# Standard operators and lanugage functionality
-"../node_modules/postfix-haskell/planning/stdlib/prelude.phs" require use
-
-# Bitwise operators
-"../node_modules/postfix-haskell/planning/stdlib/bits.phs" require use
+"../node_modules/postfix-haskell/std/lang.phs" require use # Basic operations and lanugage functionality
+"../node_modules/postfix-haskell/std/bits.phs" require use # Bitwise operators
 
 # Canvas dimensions
 768 $WIDTH =
