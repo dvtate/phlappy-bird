@@ -70,14 +70,13 @@ GATE2_ADDR static_init
             g2 GATE2_ADDR store
         ) $act fun
         (: y2 gate.WIDTH neg < y1 WIDTH 2 / < && ) (:
-            # Gate2 respawn
+            # Gate 2 respawn
             g1 GATE1_ADDR store
             gate.respawn GATE2_ADDR store
         ) $act fun
         act
     ) $update_gates =
 
-    # Get state
     (: true ) (:
         # Update state
         load ( $b $g1 $g2 ) =

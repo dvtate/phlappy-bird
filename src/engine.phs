@@ -1,5 +1,5 @@
-"../node_modules/postfix-haskell/std/lang.phs" require use # Basic operations and lanugage functionality
-"../node_modules/postfix-haskell/std/bits.phs" require use # Bitwise operators
+"../node_modules/postfix-haskell/std/lang.phs" require use     # Basic operations and lanugage functionality
+"../node_modules/postfix-haskell/std/bits.phs" require $bits = # Bitwise operators
 
 # Canvas dimensions
 768 $WIDTH =
@@ -31,9 +31,9 @@ I32 I64 F32 F64 | | | $Num =
 (:
     # Set fill color
     ( $x $y $w $h $color ) =
-    color 0xff0000 and 16 >> $r =
-    color 0xff00 and 8 >> $g =
-    color 0xff and $b =
+    color 0xff0000 bits.and 16 >> $r =
+    color 0x00ff00 bits.and 8  >> $g =
+    color 0x0000ff bits.and       $b =
     r g b js_setFill
 
     # Draw rectangle
