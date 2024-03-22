@@ -10,6 +10,7 @@
             }
             body {
                 background: black;
+                color: white;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -22,7 +23,16 @@
         </style>
     </head>
     <body>
-        <canvas width="768" height="1024" id="game"></canvas>
+        <div>
+            <canvas width="768" height="1024" id="game"></canvas>
+            <br/>
+            <ul>
+                <li>Desktop Controls: space to jump, reload to start over</li>
+                <li>Mobile Controls: tap to jump, reload to start over</li>
+                <li>Source Code: <a href="https://github.com/dvtate/phlappy-bird">https://github.com/dvtate/phlappy-bird</a></li>
+            </ul>
+        </div>
+
         <script>
             (async () => {
                 // Get canvas 2d context
